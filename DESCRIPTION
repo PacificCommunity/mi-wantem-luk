@@ -1,0 +1,14 @@
+Package: miWantemLuk
+Title: Graphing and data visualisation
+Version: 1.0.0
+Author: Robert Scott 
+Description: A package for data visualisation
+Depends: lattice, FLCore, FLR4MFCL, tidyverse, viridis, patchwork, hrbrthemes, networkD3
+Imports: methods
+Maintainer: Robert Scott <robertsc@spc.int>
+License: GPL-3
+Date: 2020-01-27
+Suggests: mapdata
+LazyLoad: Yes
+LazyData: No
+RoxygenNote: 6.1.1
