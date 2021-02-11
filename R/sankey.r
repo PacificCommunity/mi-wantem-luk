@@ -27,7 +27,10 @@ setGeneric('sankeyMovePlot', function(obj, ...) standardGeneric('sankeyMovePlot'
 
 setMethod("sankeyMovePlot", signature(obj="MFCLRegion"), 
           function(obj, ...){
+
             par <- obj
+            
+            args <- list(...)
             
             data_long <- data.frame(source=as.numeric(dimnames(diff_coffs_age_period(par))$from),
                                     target=rep(as.numeric(dimnames(diff_coffs_age_period(par))$to), 
@@ -57,7 +60,7 @@ setMethod("sankeyMovePlot", signature(obj="MFCLRegion"),
 
 
 setMethod("sankeyMovePlot", signature(obj="MFCLTag"), 
-          function(obj, frq=NULL, ...){
+          function(obj, frq=NULL, program=NULL, ...){
 
             tag <- obj
             if(is.null(frq))
@@ -66,7 +69,10 @@ setMethod("sankeyMovePlot", signature(obj="MFCLTag"),
             fsh.reg.map <- data.frame(recap.fishery=1:n_fisheries(frq), recap.region=c(aperm(region_fish(frq), c(3,1,2,4,5,6))))
             
             data <- merge(recaptures(tag), fsh.reg.map)
-            #data <- merge(subset(recaptures(tag), program=="JPTP"), fsh.reg.map)
+            
+            if(!is.null(program)) 
+              data <- merge(recaptures(tag)[recaptures(tag)$program==program,], fsh.reg.map)
+            
             
             data <- tapply(data$recap.number, list(data$region, data$recap.region), sum)
             data[is.na(data)] <- 0
@@ -91,8 +97,6 @@ setMethod("sankeyMovePlot", signature(obj="MFCLTag"),
                           Value = "value", NodeID = "name", 
                           sinksRight=FALSE, colourScale=ColourScal, nodeWidth=40, fontSize=13, nodePadding=20)
             
-            
-
           })
 
 
