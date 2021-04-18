@@ -5,6 +5,8 @@ export(
 exportClasses(
 )
 exportMethods(
+  "chordMovePlot",
+  "circBarTagPlot",
   "sankeyMovePlot"
 )
 

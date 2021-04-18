@@ -3,7 +3,7 @@ Title: Graphing and data visualisation
 Version: 1.0.0
 Author: Robert Scott 
 Description: A package for data visualisation
-Depends: lattice, FLCore, FLR4MFCL, tidyverse, viridis, patchwork, hrbrthemes, networkD3, chorddiag
+Depends: lattice, FLCore, FLR4MFCL, tidyverse, viridis, patchwork, hrbrthemes, networkD3, chorddiag, r2d3
 Imports: methods
 Maintainer: Robert Scott <robertsc@spc.int>
 License: GPL-3
