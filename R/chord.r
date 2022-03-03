@@ -72,8 +72,8 @@ setMethod("chordMovePlot", signature(obj="MFCLTag"),
             
             dimnames(m) <- list(from=regions, to=regions)
             #groupColors <- c("#000000", "#FFDD89", "#957244", "#F26223","#000000", "#FFDD89", "#957244", "#F26223")
-            rnd <- sample(1:dim(diff_coffs_age_period(par))[1], dim(diff_coffs_age_period(par))[1], replace=F)
-            groupColors <- colorRampPalette(c("goldenrod","brown","beige"))(dim(diff_coffs_age_period(par))[1])[rnd]
+            #rnd <- sample(1:dim(diff_coffs_age_period(par))[1], dim(diff_coffs_age_period(par))[1], replace=F)
+            groupColors <- colorRampPalette(c("goldenrod","brown","beige"))(dim(m)[1])
             #groupColors <- viridis(dim(diff_coffs_age_period(par))[1], option="D")
             
             p <- chorddiag(m, groupColors=groupColors, groupnamePadding=40, ...)
