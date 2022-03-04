@@ -1,12 +1,13 @@
 import("methods")
 import("FLR4MFCL")
 export(
+  "getEffortDevs",
+  "negEigenSummary"
   )
 exportClasses(
 )
 exportMethods(
   "chordMovePlot",
-  "circBarTagPlot",
   "sankeyMovePlot"
 )
 
