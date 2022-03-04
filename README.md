@@ -7,4 +7,11 @@ This package uses ggplot2 and several other graphing packages with dependancy on
 install.github("mattflor/chorddiag")
 ```
 
+It may also be necessary to explicitly install the igraph and networkD3 packages prior to installing mi-wantem-luk.
+
+```{r}
+install.packages("igraph")
+install.packages("networkD3")
+```
+
 
