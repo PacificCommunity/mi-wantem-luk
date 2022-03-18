@@ -11,4 +11,5 @@ Date: 2020-01-27
 Suggests: mapdata
 LazyLoad: Yes
 LazyData: No
-RoxygenNote: 6.1.1
+Encoding: UTF-8
+RoxygenNote: 7.1.2
