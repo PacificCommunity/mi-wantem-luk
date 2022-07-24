@@ -15,13 +15,18 @@ negEigenSummary <- function(eigen_report="new_cor_report", varnames="xinit.rpt")
   
   # read in the varnames - with fix to sort out the missing '_" in grouped catch_dev_coffs
   vars <- readLines(varnames)
-  rows <- grep('grouped', vars)
-  for(rr in rows){
-    temp <- unlist(strsplit(vars[rr], split="[[:blank:]]+"))
-    vars[rr] <- paste(temp[1], " ", temp[2], "_", temp[3], sep="")
+  
+  if(any(grepl('grouped', vars))){
+    rows <- grep('grouped', vars)
+    for(rr in rows){
+      temp <- unlist(strsplit(vars[rr], split="[[:blank:]]+"))
+      vars[rr] <- paste(temp[1], " ", temp[2], "_", temp[3], sep="")
+    }
   }
   
-  vars <- matrix(unlist(strsplit(vars, split="[[:blank:]]+")), ncol=2, byrow=T)
+  #vars <- matrix(unlist(strsplit(vars, split="[[:blank:]]+")), ncol=2, byrow=T)
+  vars <- strsplit(vars, split="[[:blank:]]+")
+  vars <- cbind(unlist(lapply(vars, el, c(1))), unlist(lapply(vars, el, c(2))))
   vars.df <- data.frame(varnum=as.numeric(vars[,1]), varname=vars[,2])
   
   
@@ -43,6 +48,8 @@ negEigenSummary <- function(eigen_report="new_cor_report", varnames="xinit.rpt")
 
 
 ## testing
+
+
 #path <- '/home/rob/MSE/ofp-sam-skipjack_MSE/condor/hessian_split/pd_hessian'
 #eigencontribs <- negEigenSummary(eigen_report = paste(path, 'new_cor_report', sep="/"),
 #                                 varnames     = paste(path, 'xinit.rpt', sep="/"))
@@ -50,4 +57,16 @@ negEigenSummary <- function(eigen_report="new_cor_report", varnames="xinit.rpt")
 #barplot(eigencontribs$contrib, names.arg = eigencontribs$varname, las=2, col=eigencontribs$varcol)
 
 #barplot(eigencontribs$contrib, col=eigencontribs$varcol)
-#legend(300, 0.3, legend=unique(eigencontribs$varname), fill=viridis(3), bty='n')
+#legend(300, 0.35, legend=unique(eigencontribs$varname), fill=viridis(3), bty='n')
+
+
+
+#path <- '/home/rob/Desktop/Shared/transfer/skj/2022_assess/hessian'
+#eigencontribs <- negEigenSummary(eigen_report = paste(path, 'new_cor_report', sep="/"),
+#                                 varnames     = paste(path, 'xinit.rpt', sep="/"))
+#barplot(eigencontribs$contrib, col=eigencontribs$varcol)
+#legend(70, 0.5, legend=unique(eigencontribs$varname), fill=viridis(length(unique(eigencontribs$varname))), bty='n')
+
+
+
+
