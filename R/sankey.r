@@ -26,7 +26,7 @@ setGeneric('sankeyMovePlot', function(obj, ...) standardGeneric('sankeyMovePlot'
 
 
 setMethod("sankeyMovePlot", signature(obj="MFCLRegion"), 
-          function(obj, ...){
+          function(obj, age=1, period=1, ...){
 
             par <- obj
             
@@ -35,7 +35,7 @@ setMethod("sankeyMovePlot", signature(obj="MFCLRegion"),
             data_long <- data.frame(source=as.numeric(dimnames(diff_coffs_age_period(par))$from),
                                     target=rep(as.numeric(dimnames(diff_coffs_age_period(par))$to), 
                                                each=length(dimnames(diff_coffs_age_period(par))$from)),
-                                    value =c(diff_coffs_age_period(par)[,,15,1]))
+                                    value =c(diff_coffs_age_period(par)[,,age,period]))
             
             data_long$target <- paste(data_long$target, " ", sep="")
             

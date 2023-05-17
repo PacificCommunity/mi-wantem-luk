@@ -2,6 +2,7 @@ import("methods")
 import("FLR4MFCL")
 export(
   "getEffortDevs",
+  "lenCompFits",
   "negEigenSummary"
   )
 exportClasses(
