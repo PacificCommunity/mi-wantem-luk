@@ -41,7 +41,7 @@ getEffortDevs <- function(par, frq){
 
 ## length frequency plot function
 lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=1, years=NULL, ...){
-  
+  #browser()
   if(is.null(years))
     years <- range(lenfit)['maxyear']-c(7:0)  # defaults to last 8 years
   
@@ -63,20 +63,25 @@ lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=1, years=NULL, ...){
     llvals[noshows] <- llvals1                                                                    # fill in llvals only for yrqtrs with data
   }
   
-  pfunlf <- function(x,y,...){
-    panel.xyplot(x,y,...)
-    if(!is.null(tpo)){
-      panel.text(max(lenfitsub$length)*0.9, max(lenfitsub$obs)*0.95, round(sampsize[panel.number()],2), cex=0.8)
-      panel.text(max(lenfitsub$length)*0.9, max(lenfitsub$obs)*0.80, round(llvals[panel.number()],2), cex=0.8)
-    }
-    if(!is.null(par)){
-      panel.abline(v=laa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
-    }
-  }
   xyplot(obs+pred~length|as.factor(month)*as.character(year), data=lenfitsub,
-         xlab="Length", ylab="Frequency", type="l", panel=pfunlf, 
-         key=list(space='top',columns=2, lines=list(lty=1, col=c("blue","magenta")), text=list(c("observed","predicted"))), ...)
-  
+         xlab="Length", ylab="Frequency", type="l", 
+         panel=panel.superpose, superpose=T, 
+         panel.groups=function(..., group.number, col='lightgrey'){
+           if(group.number==1){
+             #par.settings=list(superpose.fill=list(col="lightgrey"))
+             panel.polygon(..., col='lightgrey')
+           }
+           else 
+             panel.xyplot(...)
+           
+           if(!is.null(tpo)){
+             panel.text(max(lenfitsub$length)*0.9, max(lenfitsub$obs)*0.95, round(sampsize[panel.number()],2), cex=0.8)
+             panel.text(max(lenfitsub$length)*0.9, max(lenfitsub$obs)*0.80, round(llvals[panel.number()],2), cex=0.8)
+           }
+           if(!is.null(par)){
+             panel.abline(v=laa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
+           }},
+         key=list(space='top',columns=2, lines=list(lty=1, col=c("black","magenta")), text=list(c("observed","predicted"))), ...)
 }
 
 #pp  <- read.MFCLPar('/home/rob/MSE/ofp-sam-albacore_MSE/OMs/CC_grid/CC_JH/06.par')
