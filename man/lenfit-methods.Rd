@@ -5,18 +5,18 @@
 \alias{lenCompFits}
 \title{lenCompFits}
 \usage{
-lenCompFits(lenfit, par = NULL, tpo = NULL, fsh = 1, years = NULL)
+lenCompFits(lenfit, par = NULL, tpo = NULL, fsh = NULL, years = NULL, ...)
 }
 \arguments{
-\item{lenfit}{An object of class MFCLLenFit}
+\item{lenfit:}{An object of class MFCLLenFit}
 
-\item{par}{An object of class MFCLPar}
+\item{par:}{An object of class MFCLPar}
 
-\item{tpo}{An object of class MFCLLikelihood}
+\item{tpo:}{An object of class MFCLLikelihood}
 
-\item{fsh}{Numeric fishery identifier (default 1)}
+\item{fsh:}{Numeric fishery identifier (default 1)}
 
-\item{years}{Numeric years to be plotted (default last 8 years)}
+\item{years:}{Numeric years to be plotted (default last 8 years)}
 }
 \value{
 A plot of observed vs predicted length for the selected fishery and year range.

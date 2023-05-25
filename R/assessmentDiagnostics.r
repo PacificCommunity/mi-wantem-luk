@@ -30,7 +30,7 @@ getEffortDevs <- function(par, frq){
 #' @param years:  Numeric years to be plotted (default last 8 years)
 #'
 #'
-#' @return A plot of obseved vs predicted length for the selected fishery and year range.
+#' @return A plot of observed vs predicted length for the selected fishery and year range.
 #' 
 #' 
 #' @export
@@ -40,10 +40,17 @@ getEffortDevs <- function(par, frq){
 
 
 ## length frequency plot function
-lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=1, years=NULL, ...){
+lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, ...){
   #browser()
-  if(is.null(years))
-    years <- range(lenfit)['maxyear']-c(7:0)  # defaults to last 8 years
+  if(is.null(years)){
+    years <- range(lenfit)['minyear']:range(lenfit)['maxyear']  
+    if(length(years)>6){
+      print(paste("year range is", length(years), "plotting only the first 6"))
+      years <- years[1:6]
+    }
+  }
+  if(is.null(fsh))
+    fsh <- lenfits(lenfit)$fishery[1]  #defaults to potting first fishery only
   
   lenfitx      <- subset(lenfits(lenfit), fishery==fsh & length==min(length))                   # needed to determine which llvals correspond to yr qtr plot data
   lenfitsub    <- subset(lenfits(lenfit), fishery==fsh & year%in%years)                         # data to be plotted
@@ -60,7 +67,13 @@ lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=1, years=NULL, ...){
     sampsize     <- rep(0, length(noshows))                                                       # fill in sample size only for yrqtrs with data
     sampsize[noshows] <- sampsize1
     llvals       <- rep(0, length(noshows))
-    llvals[noshows] <- llvals1                                                                    # fill in llvals only for yrqtrs with data
+    if(length(llvals[noshows]) == length(llvals1))
+      llvals[noshows] <- llvals1                                                                    # fill in llvals only for yrqtrs with data
+    if(length(llvals[noshows]) != length(llvals1)){
+      llvals[noshows] <- NA
+      warning("year month range of input files not compatible")
+    }
+      
   }
   
   xyplot(obs+pred~length|as.factor(month)*as.character(year), data=lenfitsub,
