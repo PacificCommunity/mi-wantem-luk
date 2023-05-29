@@ -1,6 +1,7 @@
 import("methods")
 import("FLR4MFCL")
 export(
+  "condLenAgeFits",
   "getEffortDevs",
   "lenCompFits",
   "negEigenSummary"
@@ -9,7 +10,8 @@ exportClasses(
 )
 exportMethods(
   "chordMovePlot",
-  "sankeyMovePlot"
+  "sankeyMovePlot",
+  "plot"
 )
 
 

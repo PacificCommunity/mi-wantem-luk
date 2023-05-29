@@ -107,6 +107,68 @@ lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
 
 #lenCompFits(trim(lfit, length=0:100), pp, tpo, fsh=15, years=2010:2014)
 
+#wgtfit <- read.MFCLWgtFit('/media/sf_assessments/yft/2023/model_runs/stepwise/03_PreCatchCond/03j_No_Effort_Projections/weight.fit', get_wgtage=T)
+#wgtCompFits(wgtfit, pp, tpo, fsh=1, years=2010:2014)
+
+
+## weight frequency plot function
+wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=NULL, ...){
+  #browser()
+  if(is.null(years)){
+    years <- range(lenfit)['minyear']:range(lenfit)['maxyear']  
+    if(length(years)>6){
+      print(paste("year range is", length(years), "plotting only the first 6"))
+      years <- years[1:6]
+    }
+  }
+  if(is.null(fsh))
+    fsh <- lenfits(lenfit)$fishery[1]  #defaults to plotting first fishery only
+  
+  wgtfitx      <- subset(wgtfits(wgtfit), fishery==fsh & weight==min(weight))                   # needed to determine which llvals correspond to yr qtr plot data
+  wgtfitsub    <- subset(wgtfits(wgtfit), fishery==fsh & year%in%years)                         # data to be plotted
+  wgtfitsubsub <- subset(wgtfits(wgtfit), fishery==fsh & year%in%years & weight==min(weight))   # needed to determine which llvals correspond to yr qtr plot data
+  
+  years        <- sort(unique(wgtfitsubsub$year))   # if some years are missing data altogether - lattice will drop these
+  months       <- sort(unique(wgtfitsubsub$month))  # if some qtrs consistently not represented - lattice will drop these
+  
+  if(!is.null(tpo)){
+    sampsize1     <- round(wgtfitsubsub$sample_size)
+    llvals1      <- weight_fish(tpo)[[fsh]][is.element(wgtfitx$year+(wgtfitx$month/12), wgtfitsubsub$year+(wgtfitsubsub$month/12))]
+    noshows      <- is.element(rep(years, each=length(months))+months/12, wgtfitsubsub$year+(wgtfitsubsub$month/12))  # identify yr qtrs with not data
+    
+    sampsize     <- rep(0, length(noshows))                                                       # fill in sample size only for yrqtrs with data
+    sampsize[noshows] <- sampsize1
+    llvals       <- rep(0, length(noshows))
+    if(length(llvals[noshows]) == length(llvals1))
+      llvals[noshows] <- llvals1                                                                    # fill in llvals only for yrqtrs with data
+    if(length(llvals[noshows]) != length(llvals1)){
+      llvals[noshows] <- NA
+      warning("year month range of input files not compatible")
+    }
+    
+  }
+  
+  xyplot(obs+pred~weight|as.factor(month)*as.character(year), data=wgtfitsub,
+         xlab="Weight", ylab="Frequency", type="l", 
+         panel=panel.superpose, superpose=T, 
+         panel.groups=function(..., group.number, col='lightgrey'){
+           if(group.number==1){
+             #par.settings=list(superpose.fill=list(col="lightgrey"))
+             panel.polygon(..., col='lightgrey')
+           }
+           else 
+             panel.xyplot(...)
+           
+           if(!is.null(par)){
+             panel.abline(v=laa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
+           }
+           if(!is.null(tpo)){
+             panel.text(max(wgtfitsub$weight)*0.9, max(wgtfitsub$obs)*0.95, paste("N =", round(sampsize[panel.number()],0)), cex=0.8)
+             panel.text(max(wgtfitsub$weight)*0.9, max(wgtfitsub$obs)*0.80, paste("-LL =", round(llvals[panel.number()],0)), cex=0.8)
+           }},
+         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("black","magenta")), text=list(c("observed","predicted"))), ...)
+}
+
 
 
 condLenAgeFits <- function(lfit, alk=NULL, ...){
