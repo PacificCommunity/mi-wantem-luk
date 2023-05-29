@@ -115,14 +115,14 @@ lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
 wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=NULL, ...){
   #browser()
   if(is.null(years)){
-    years <- range(lenfit)['minyear']:range(lenfit)['maxyear']  
+    years <- range(wgtfit)['minyear']:range(wgtfit)['maxyear']  
     if(length(years)>6){
       print(paste("year range is", length(years), "plotting only the first 6"))
       years <- years[1:6]
     }
   }
   if(is.null(fsh))
-    fsh <- lenfits(lenfit)$fishery[1]  #defaults to plotting first fishery only
+    fsh <- wgtfits(wgtfit)$fishery[1]  #defaults to plotting first fishery only
   
   wgtfitx      <- subset(wgtfits(wgtfit), fishery==fsh & weight==min(weight))                   # needed to determine which llvals correspond to yr qtr plot data
   wgtfitsub    <- subset(wgtfits(wgtfit), fishery==fsh & year%in%years)                         # data to be plotted
@@ -171,10 +171,10 @@ wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
 
 
 
-condLenAgeFits <- function(lfit, alk=NULL, ...){
+condLenAgeFits <- function(lfitx, alk=NULL, ...){
   #browser()
   #merge the lenfit data and the ALK
-  ddlfit <- cbind(subset(lenagefits(lfit), pred>0), dtype='pred')
+  ddlfit <- cbind(subset(lenagefits(lfitx), pred>0), dtype='pred')
   colnames(ddlfit)[6] <- 'data'
   ddalk  <- cbind(subset(ALK(alk), obs>0), dtype='obs')
   colnames(ddalk)[7] <- 'data'
@@ -210,7 +210,7 @@ condLenAgeFits <- function(lfit, alk=NULL, ...){
         if(nrow(subset(dd, year==yy & month==mm & dtype=='obs'))>0)
           symbols(subset(dd, year==yy & month==mm & dtype=='obs')$length, subset(dd, year==yy & month==mm & dtype=='obs')$age, 
                 circles=subset(dd, year==yy & month==mm & dtype=='obs')$data, inches=0.1, fg='blue', add=T)
-        lines(c(laa(lfit)), c(as.numeric(dimnames(laa(lfit))$age))/4)
+        lines(c(laa(lfitx)), c(as.numeric(dimnames(laa(lfitx))$age))/4)
       }
   }
   #mtext('Length', side=1)
