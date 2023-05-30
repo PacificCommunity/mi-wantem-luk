@@ -171,7 +171,7 @@ wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
 
 
 
-condLenAgeFits <- function(lfitx, alk=NULL, ...){
+condLenAgeFits <- function(lfitx, alk=NULL, par=NULL, ...){
   #browser()
   #merge the lenfit data and the ALK
   ddlfit <- cbind(subset(lenagefits(lfitx), pred>0), dtype='pred')
@@ -189,7 +189,7 @@ condLenAgeFits <- function(lfitx, alk=NULL, ...){
   ll <- sort(unique(dd$length))
   aa <- seq(range(unique(dd$age))[1], range(unique(dd$age))[2], length=length(ll))
   
-  par(mfrow=c(length(unique(dd$year)), length(unique(dd$month))), mar=c(0,0,0,0), omi=c(0.8,0.8,0.5,0.5))
+  par(mfrow=c(length(unique(dd$year)), length(unique(dd$month))), mar=c(0,0,0,0), omi=c(0.8,0.8,0.3,0.3))
   
   for(yy in sort(unique(dd$year))){
     for(mm in sort(unique(dd$month))){
@@ -210,11 +210,13 @@ condLenAgeFits <- function(lfitx, alk=NULL, ...){
         if(nrow(subset(dd, year==yy & month==mm & dtype=='obs'))>0)
           symbols(subset(dd, year==yy & month==mm & dtype=='obs')$length, subset(dd, year==yy & month==mm & dtype=='obs')$age, 
                 circles=subset(dd, year==yy & month==mm & dtype=='obs')$data, inches=0.1, fg='blue', add=T)
-        lines(c(laa(lfitx)), c(as.numeric(dimnames(laa(lfitx))$age))/4)
+        if(!is.null(par))
+          lines(c(laa(par)), 1:length(laa(par)))
       }
   }
-  #mtext('Length', side=1)
-  #mtext('Age',    side=2) 
+  par(new=T, mfrow=c(1,1))
+  mtext('Length', side=1, line=2)
+  mtext('Age',    side=2, line=2) 
   
 }
 
