@@ -108,7 +108,9 @@ lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
 #lenCompFits(trim(lfit, length=0:100), pp, tpo, fsh=15, years=2010:2014)
 
 #wgtfit <- read.MFCLWgtFit('/media/sf_assessments/yft/2023/model_runs/stepwise/03_PreCatchCond/03j_No_Effort_Projections/weight.fit', get_wgtage=T)
-#wgtCompFits(wgtfit, pp, tpo, fsh=1, years=2010:2014)
+#tpo    <- read.MFCLLikelihood('/media/sf_assessments/yft/2023/model_runs/stepwise/03_PreCatchCond/03j_No_Effort_Projections/test_plot_output')
+#pp     <- read.MFCLPar('/media/sf_assessments/yft/2023/model_runs/stepwise/03_PreCatchCond/03j_No_Effort_Projections/10.par')
+#wgtCompFits(trim(wgtfit, weight=1:100), pp, tpo, fsh=1, years=2010:2014)
 
 
 ## weight frequency plot function
@@ -160,7 +162,8 @@ wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
              panel.xyplot(...)
            
            if(!is.null(par)){
-             panel.abline(v=laa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
+             panel.abline(v=waa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
+             panel.lines(..., col="magenta")
            }
            if(!is.null(tpo)){
              panel.text(max(wgtfitsub$weight)*0.9, max(wgtfitsub$obs)*0.95, paste("N =", round(sampsize[panel.number()],0)), cex=0.8)
