@@ -162,7 +162,8 @@ wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
              panel.xyplot(...)
            
            if(!is.null(par)){
-             panel.abline(v=waa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
+             #panel.abline(v=waa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
+             panel.abline(v=waa(par)[seq(1,dimensions(par)['agecls'], by=4)], col="lightgrey")
              panel.lines(..., col="magenta")
            }
            if(!is.null(tpo)){
