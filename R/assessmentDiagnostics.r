@@ -17,6 +17,26 @@ getEffortDevs <- function(par, frq){
   
 }
 
+#setGeneric('process', function(object, ...) standardGeneric('process')) 
+
+# #' @rdname mfcl-methods
+# #' @aliases process
+
+#setMethod("process", signature(object="MFCLLenFit"), 
+#          function(object, ...){
+#})
+            
+
+#lfityft <- read.MFCLLenFit2('/media/sf_assessments/yft/2023/model_runs/stepwise/03_PreCatchCond/03j_No_Effort_Projections/length.fit', get_lenage=F)
+
+
+
+
+
+
+
+
+
 
 
 #' lenCompFits
@@ -187,7 +207,7 @@ condLenAgeFits <- function(lfitx, alk=NULL, par=NULL, ...){
   tempdatn   <- nrow(ddalk)      #tapply(ddalk$data, list(ddalk$year, ddalk$month, ddalk$fishery), length)
   ddalk$data <- ddalk$data/tempdatsum
   
-  dd     <<- rbind(ddlfit[,c('year','month','fishery','age','length','data','dtype')],
+  dd     <- rbind(ddlfit[,c('year','month','fishery','age','length','data','dtype')],
                   ddalk[,c('year','month','fishery','age','length','data','dtype')])
   
   ll <- sort(unique(dd$length))
