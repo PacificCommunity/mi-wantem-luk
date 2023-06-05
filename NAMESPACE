@@ -11,8 +11,7 @@ exportClasses(
 )
 exportMethods(
   "chordMovePlot",
-  "sankeyMovePlot",
-  "plot"
+  "sankeyMovePlot"
 )
 
 

@@ -1,6 +1,6 @@
 Package: miWantemLuk
 Title: Graphing and data visualisation
-Version: 1.0.2
+Version: 1.0.3
 Author: Robert Scott 
 Description: A package for data visualisation
 Depends: lattice, FLCore, FLR4MFCL, tidyverse, viridis, patchwork, hrbrthemes, networkD3, chorddiag, r2d3
