@@ -5,6 +5,7 @@ export(
   "getEffortDevs",
   "lenCompFits",
   "negEigenSummary",
+  "tagplot",
   "wgtCompFits"
   )
 exportClasses(

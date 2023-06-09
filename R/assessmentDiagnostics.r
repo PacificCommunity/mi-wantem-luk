@@ -250,6 +250,35 @@ condLenAgeFits <- function(lfitx, alk=NULL, par=NULL, ...){
 
 
 
+#setMethod("tagplot", signature(x="MFCLTag", y="data.frame"),
+tagplot <- function(x,y,..., col='steelblue4', program=NULL){
+            
+            
+            tagdat <- merge(ttr.all, recaptures(tag)[,c('rel.group', 'region', 'year', 'month', 'program')])
+            tagdat <- tagdat[!duplicated(tagdat),]
+            
+            tagdat$recap.obs[tagdat$recap.obs==0] <- NA
+            tagdat$Resid    <- tagdat$recap.obs-tagdat$recap.pred
+            tagdat$logResid <- log(tagdat$recap.obs)-log(tagdat$recap.pred)
+            tagdat$pResid   <- NA
+            tagdat$pResid <- tagdat$Resid/sd(tagdat$Resid, na.rm=T)
+            
+            tagdat$tlib     <- (tagdat$recap.year+tagdat$recap.month/12) - (tagdat$year+tagdat$month/12)
+            
+            tagdat2    <- tagdat[!is.na(tagdat$logResid),]
+            
+            if(!is.null(program))
+              tagdat2 <- tagdat2[tagdat2$program==program ,]
+            
+            # Pearson Resids by recapture fishery
+            boxplot(pResid~recap.fishery, data=tagdat2, ylab="Pearson Residuals", col=col)
+            
+          }
+
+
+
+
+
 
 
 ## Not really working - switching to a non-lattice approach
