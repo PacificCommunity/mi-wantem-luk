@@ -17,6 +17,15 @@ getEffortDevs <- function(par, frq){
   
 }
 
+getCatchDevCoffs <- function(par, frq){
+  # catch dev coffs is 1 shorter than number of realisations - not sure if this is the first or last obs that is missing.
+  realz <- realisations(frq)[order(realisations(frq)$fishery, realisations(frq)$year, realisations(frq)$month),]  
+  realz <- cbind(realz, yrqtr = realz$year+(realz$month/12), catch_dev_coffs=unlist(lapply(catch_dev_coffs(par), c, NA)))
+  
+  return(realz)
+}
+
+
 #setGeneric('process', function(object, ...) standardGeneric('process')) 
 
 # #' @rdname mfcl-methods

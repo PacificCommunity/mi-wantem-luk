@@ -35,7 +35,7 @@ setMethod("sankeyMovePlot", signature(obj="MFCLRegion"),
             data_long <- data.frame(source=as.numeric(dimnames(diff_coffs_age_period(par))$from),
                                     target=rep(as.numeric(dimnames(diff_coffs_age_period(par))$to), 
                                                each=length(dimnames(diff_coffs_age_period(par))$from)),
-                                    value =c(diff_coffs_age_period(par)[,,age,period]))
+                                    value =c(t(diff_coffs_age_period(par)[,,age,period])))
             
             data_long$target <- paste(data_long$target, " ", sep="")
             
@@ -54,10 +54,7 @@ setMethod("sankeyMovePlot", signature(obj="MFCLRegion"),
                           Value = "value", NodeID = "name", 
                           sinksRight=FALSE, colourScale=ColourScal, nodeWidth=40, fontSize=13, nodePadding=20)
             
-            
-            
           })
-
 
 setMethod("sankeyMovePlot", signature(obj="MFCLTag"), 
           function(obj, frq=NULL, program=NULL, ...){
