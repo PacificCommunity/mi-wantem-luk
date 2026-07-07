@@ -123,7 +123,7 @@ lenCompFits <- function(lenfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
              panel.text(max(lenfitsub$length)*0.9, max(lenfitsub$obs)*0.95, paste("N =", round(sampsize[panel.number()],0)), cex=0.8)
              panel.text(max(lenfitsub$length)*0.9, max(lenfitsub$obs)*0.80, paste("-LL =", round(llvals[panel.number()],0)), cex=0.8)
            }},
-         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("black","magenta")), text=list(c("observed","predicted"))), ...)
+         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("black","goldenrod")), text=list(c("observed","predicted"))), ...)
 }
 
 #pp  <- read.MFCLPar('/home/rob/MSE/ofp-sam-albacore_MSE/OMs/CC_grid/CC_JH/06.par')
@@ -193,14 +193,78 @@ wgtCompFits <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=N
            if(!is.null(par)){
              #panel.abline(v=waa(par, ages=seq(1,dimensions(par)['agecls'], by=4)), col="lightgrey")
              panel.abline(v=waa(par)[seq(1,dimensions(par)['agecls'], by=4)], col="lightgrey")
-             panel.lines(..., col="magenta")
+             panel.lines(..., col="goldenrod")
            }
            if(!is.null(tpo)){
              panel.text(max(wgtfitsub$weight)*0.9, max(wgtfitsub$obs)*0.95, paste("N =", round(sampsize[panel.number()],0)), cex=0.8)
              panel.text(max(wgtfitsub$weight)*0.9, max(wgtfitsub$obs)*0.80, paste("-LL =", round(llvals[panel.number()],0)), cex=0.8)
            }},
-         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("black","magenta")), text=list(c("observed","predicted"))), ...)
+         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("black","goldenrod")), text=list(c("observed","predicted"))), ...)
 }
+
+
+
+
+
+wgtCompFitsAll <- function(wgtfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=NULL, ...){
+
+  if(!is.list(wgtfit)){
+    wgtdat <- aggregate(wgtfits(wgtfit), 
+                        by=list(fsh=wgtfits(wgtfit)$fishery, wgt=wgtfits(wgtfit)$weight), mean)
+  }
+  
+  if(is.list(wgtfit)){
+    wgtdat <- data.frame()
+    for(xx in 1:length(wgtfit))
+      wgtdat <- rbind(wgtdat, cbind(wgtfits(wgtfit[[xx]]), OM=xx))
+    
+    wgtdat <- aggregate(wgtdat, by=list(fsh=wgtdat$fishery, wgt=wgtdat$weight, om=wgtdat$OM), mean)
+  }
+  
+  if(!is.null(name))
+    wgtdat <- merge(wgtdat, name[,c('fishery','name')])
+  
+  wgtdat <- wgtdat[order(wgtdat$fsh, wgtdat$wgt),]
+  
+  xyplot(obs+pred~wgt|as.factor(name), data=wgtdat,
+         xlab="Weight", ylab="Frequency", type="l", ...,
+         
+         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("dodgerblue4","goldenrod")), 
+                  text=list(c("observed","predicted"))))
+}
+
+
+
+
+lenCompFitsAll <- function(lenfit, par=NULL, tpo=NULL, fsh=NULL, years=NULL, name=NULL, ...){
+  
+  if(!is.list(lenfit)){
+    lendat <- aggregate(lenfits(lenfit), 
+                        by=list(fsh=lenfits(lenfit)$fishery, len=lenfits(lenfit)$length), mean)
+  }
+  
+  if(is.list(lenfit)){
+    lendat <- data.frame()
+    for(xx in 1:length(lenfit))
+      lendat <- rbind(lendat, cbind(lenfits(lenfit[[xx]]), OM=xx))
+    
+    lendat <- aggregate(lendat, by=list(fsh=lendat$fishery, len=lendat$length, om=lendat$OM), mean)
+  }
+  
+  if(!is.null(name))
+    lendat <- merge(lendat, name[,c('fishery','name')])
+  
+  lendat <- lendat[order(lendat$fsh, lendat$len),]
+  
+  xyplot(obs+pred~len|as.factor(name), data=lendat,
+         xlab="length", ylab="Frequency", type="l", ...,
+         
+         key=list(space='top',columns=2, lines=list(lty=c(1,1), col=c("dodgerblue4","goldenrod")), 
+                  text=list(c("observed","predicted"))))
+}
+
+
+
 
 
 
