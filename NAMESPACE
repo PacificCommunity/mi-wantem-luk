@@ -7,9 +7,11 @@ export(
   "getCatchDevCoffs",
   "getEffortDevs",
   "lenCompFits",
+  "lenCompFitsAll",
   "negEigenSummary",
   "tagplot",
-  "wgtCompFits"
+  "wgtCompFits",
+  "wgtCompFitsAll"
   )
 exportClasses(
 )
